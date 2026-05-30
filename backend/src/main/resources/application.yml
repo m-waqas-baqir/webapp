@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: real-investments-api
+
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 10MB
+
+  datasource:
+    url: jdbc:h2:mem:appdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized
+
+# OpenAPI / Swagger UI (springdoc)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+app:
+  storage:
+    root: "./data/uploads"
+    max-image-bytes: 5242880
+    allowed-content-types: "image/jpeg,image/png,image/gif,image/webp"
+  audit:
+    enabled: true
+  seed:
+    enabled: true
+  cors:
+    allowed-origins:
+      - "http://localhost:4200"
+  security:
+    jwt:
+      # HS256: at least 32 characters. Override in env / secrets manager for production.
+      secret: "change-this-dev-secret-min-32-chars!!"
+      expiration-seconds: 86400
+      issuer: "Real Investments"
+      audience: ""
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG

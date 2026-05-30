@@ -1,0 +1,16 @@
+# Activate with: spring.profiles.active=postgres
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appdb
+    driver-class-name: org.postgresql.Driver
+    username: app
+    password: app
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  h2:
+    console:
+      enabled: false

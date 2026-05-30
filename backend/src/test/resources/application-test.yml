@@ -1,0 +1,10 @@
+# Applied when spring.profiles.active includes "test" (see @ActiveProfiles on integration tests).
+app:
+  audit:
+    enabled: false
+  seed:
+    enabled: false
+  security:
+    jwt:
+      # Required for JwtService; same length rules as main application.yml
+      secret: "test-jwt-hs256-secret-must-be-32-chars-min!!"
