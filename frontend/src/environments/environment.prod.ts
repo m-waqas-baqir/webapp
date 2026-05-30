@@ -6,5 +6,5 @@ export const environment = {
   production: true,
   appVersion: '0.1.0',
   /** Same-origin: browser calls `/api/...` relative to the site origin. */
-  apiBaseUrl: '',
+  apiBaseUrl: 'https://webapp-yt4i.onrender.com',
 };
