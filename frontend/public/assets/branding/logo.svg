@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 44" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="ri-logo-gold" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#9a7b4a"/>
+      <stop offset="100%" stop-color="#c4a574"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark: stylized skyline -->
+  <g transform="translate(0,2)">
+    <rect x="0" y="22" width="7" height="18" rx="1" fill="#0B1F3B"/>
+    <path d="M10 28 L10 40 L17 40 L17 22 Z" fill="url(#ri-logo-gold)"/>
+    <path d="M21 8 L21 40 L30 40 L30 12 L25.5 8 Z" fill="#0B1F3B"/>
+    <path d="M34 16 L34 40 L41 40 L41 20 Z" fill="#0B1F3B"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="52" y="30" fill="#0B1F3B" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="17" font-weight="600" letter-spacing="-0.02em">Real Investments</text>
+</svg>

@@ -1,0 +1,218 @@
+/* -------------------------------------------------------------------------- */
+/* Theme: smooth token transitions (class toggled on <html> by ThemeService)   */
+/* -------------------------------------------------------------------------- */
+html {
+  transition:
+    background-color 0.22s ease-in-out,
+    color 0.22s ease-in-out;
+}
+
+html,
+body,
+.mat-mdc-card,
+.mat-toolbar,
+.mat-mdc-dialog-surface,
+.mat-mdc-menu-panel,
+.mat-mdc-form-field,
+.mat-mdc-text-field-wrapper,
+.mdc-list-item,
+.mat-mdc-table,
+.mat-mdc-paginator,
+mat-sidenav,
+mat-sidenav-content,
+.shell,
+.landing,
+.login__card {
+  transition:
+    background-color 0.22s ease-in-out,
+    color 0.22s ease-in-out,
+    border-color 0.22s ease-in-out,
+    box-shadow 0.22s ease-in-out;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Dark theme: surfaces + copy — tokens in material-dark-tokens + theme.scss */
+/* -------------------------------------------------------------------------- */
+html:is(.app-dark-theme, .dark-theme) .shell {
+  background-color: var(--bg-main, var(--mat-sys-surface-container-lowest));
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing {
+  background:
+    radial-gradient(900px 520px at 0% 0%, rgba(129, 140, 248, 0.14), transparent 58%),
+    radial-gradient(720px 440px at 100% 10%, rgba(167, 139, 250, 0.1), transparent 52%),
+    linear-gradient(180deg, #0b1220 0%, #111827 46%, #0b1220 100%);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__headline,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__section-title,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__role-title,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__feature-title,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__hero-stat-title {
+  color: var(--mat-sys-on-surface);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__lede,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__section-sub,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__feature-text,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__role-text,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__hero-stat-text {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__logo-name {
+  color: var(--mat-sys-on-surface);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__logo-tag {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__footer {
+  background: color-mix(in srgb, var(--mat-sys-surface-container) 40%, transparent);
+  border-top-color: color-mix(in srgb, var(--mat-sys-outline-variant) 35%, transparent);
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing .landing__footer-inner,
+html:is(.app-dark-theme, .dark-theme) .landing .landing__footer-brand {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+html:is(.app-dark-theme, .dark-theme) .dash-lede,
+html:is(.app-dark-theme, .dark-theme) .dash-muted,
+html:is(.app-dark-theme, .dark-theme) .dash-empty {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Buttons: hover brightness + active scale (GPU-friendly)                    */
+/* -------------------------------------------------------------------------- */
+button.mat-mdc-button-base,
+a.mat-mdc-button-base {
+  transition:
+    filter 0.2s ease,
+    transform 0.16s ease;
+}
+
+button.mat-mdc-button-base:hover:not(:disabled),
+a.mat-mdc-button-base:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+html:is(.app-dark-theme, .dark-theme) button.mat-mdc-button-base:hover:not(:disabled),
+html:is(.app-dark-theme, .dark-theme) a.mat-mdc-button-base:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+button.mat-mdc-button-base:active:not(:disabled),
+a.mat-mdc-button-base:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Primary / accent: subtle depth + hover glow (keeps contrast; no glass on data actions) */
+a.mat-mdc-unelevated-button.mat-primary,
+button.mat-mdc-unelevated-button.mat-primary {
+  box-shadow: var(--elev-1-shadow, 0 1px 2px rgba(0, 0, 0, 0.08));
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mat-sys-primary) 100%, #fff 6%),
+    var(--mat-sys-primary)
+  );
+}
+
+a.mat-mdc-unelevated-button.mat-primary:hover:not(:disabled),
+button.mat-mdc-unelevated-button.mat-primary:hover:not(:disabled) {
+  box-shadow:
+    var(--elev-2-shadow, 0 4px 12px rgba(0, 0, 0, 0.12)),
+    0 0 0 1px color-mix(in srgb, var(--mat-sys-on-primary) 14%, transparent);
+  filter: brightness(1.04);
+}
+
+a.mat-mdc-outlined-button:hover:not(:disabled),
+button.mat-mdc-outlined-button:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mat-sys-primary) 25%, transparent);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Cards: data view + landing + dashboard                                    */
+/* -------------------------------------------------------------------------- */
+.data-view__card,
+.dash-card,
+.landing__feature-card,
+.landing__role-card,
+.landing__hero-card {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.2s ease;
+}
+
+.data-view__card:hover,
+.dash-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--elev-2-shadow, var(--shadow-medium));
+}
+
+.landing__role-card:hover,
+.landing__hero-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Feature cards: hover shadow defined in landing-page.component.scss (glass + elevation) */
+
+/* -------------------------------------------------------------------------- */
+/* Tables: row hover (plots, rentals, activity logs, owners, hierarchy)        */
+/* -------------------------------------------------------------------------- */
+.mat-mdc-table .mat-mdc-row {
+  transition: background-color 0.2s ease;
+  cursor: default;
+}
+
+.mat-mdc-table .mat-mdc-row:hover {
+  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent);
+}
+
+html:is(.app-dark-theme, .dark-theme) .mat-mdc-table .mat-mdc-row:hover {
+  background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Form fields: focus ring + error line                                        */
+/* -------------------------------------------------------------------------- */
+.mat-mdc-text-field-wrapper,
+.mat-mdc-form-field-focus-overlay {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.mat-mdc-form-field.mat-focused:not(.mat-form-field-invalid) .mdc-notched-outline .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused:not(.mat-form-field-invalid) .mdc-notched-outline .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused:not(.mat-form-field-invalid) .mdc-notched-outline .mdc-notched-outline__trailing {
+  transition: border-color 0.2s ease;
+}
+
+.mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error {
+  animation: app-field-error-reveal 0.22s ease-out;
+}
+
+@keyframes app-field-error-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Progress / skeleton                                                         */
+/* -------------------------------------------------------------------------- */
+mat-progress-bar {
+  transition: opacity 0.25s ease;
+}
+
+.data-view__skeleton-row {
+  transition: opacity 0.2s ease;
+}

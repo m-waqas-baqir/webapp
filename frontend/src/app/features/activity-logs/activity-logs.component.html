@@ -1,0 +1,124 @@
+<app-page-header
+  icon="history"
+  title="Activity logs"
+  subtitle="Audit trail of CREATE, UPDATE, and DELETE across plots, rentals, owners, and related entities."
+/>
+
+@if (loading) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-card class="filters" appearance="outlined">
+  <mat-card-content>
+    <div class="filters__title">Filters</div>
+    <p class="filters__hint">
+      Pagination uses the server by default. With filters, the app loads the latest {{ filterFetchSize }} events and filters them in the browser (date range and selections apply to that window).
+    </p>
+    <div class="filters__grid" [formGroup]="filterForm">
+      <mat-form-field appearance="outline">
+        <mat-label>User</mat-label>
+        <mat-select formControlName="actorEmail">
+          <mat-option value="">All users</mat-option>
+          @for (e of actorOptions(); track e) {
+            <mat-option [value]="e">{{ e }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Action</mat-label>
+        <mat-select formControlName="action">
+          <mat-option value="">All actions</mat-option>
+          @for (a of actionOptions; track a) {
+            <mat-option [value]="a">{{ a }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Entity type</mat-label>
+        <mat-select formControlName="entityType">
+          <mat-option value="">All types</mat-option>
+          @for (t of entityTypeOptions; track t) {
+            <mat-option [value]="t">{{ t }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>From date</mat-label>
+        <input matInput [matDatepicker]="fromPicker" formControlName="dateFrom" />
+        <mat-datepicker-toggle matIconSuffix [for]="fromPicker" />
+        <mat-datepicker #fromPicker />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>To date</mat-label>
+        <input matInput [matDatepicker]="toPicker" formControlName="dateTo" />
+        <mat-datepicker-toggle matIconSuffix [for]="toPicker" />
+        <mat-datepicker #toPicker />
+      </mat-form-field>
+    </div>
+    <div class="filters__actions">
+      <button mat-flat-button color="primary" type="button" (click)="applyFilters()">Apply filters</button>
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="applyServerFilters()"
+        [disabled]="loading || !filterMode"
+      >
+        Reload window
+      </button>
+      <button mat-button type="button" (click)="clearFilters()">Clear &amp; use server paging</button>
+    </div>
+    @if (filterTruncated) {
+      <p class="filters__warn">
+        More than {{ filterFetchSize }} events exist in the database. Only the latest {{ filterFetchSize }} are loaded for filtered view.
+      </p>
+    }
+  </mat-card-content>
+</mat-card>
+
+<div class="table-wrap mat-elevation-z1">
+  <table mat-table matSort [dataSource]="rows" (matSortChange)="onSortChange($event)">
+    <ng-container matColumnDef="occurredAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="occurredAt">Timestamp (UTC)</th>
+      <td mat-cell *matCellDef="let row">{{ row.occurredAt }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actorEmail">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="actorEmail">User name</th>
+      <td mat-cell *matCellDef="let row">{{ row.actorEmail }}</td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="action">Action</th>
+      <td mat-cell *matCellDef="let row">
+        <span [class]="actionChipClass(row.action)">{{ row.action }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="entityType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="entityType">Entity type</th>
+      <td mat-cell *matCellDef="let row">{{ row.entityType }}</td>
+    </ng-container>
+    <ng-container matColumnDef="entityId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="entityId">Entity ID</th>
+      <td mat-cell *matCellDef="let row">{{ row.entityId }}</td>
+    </ng-container>
+    <ng-container matColumnDef="summary">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let row">{{ summary(row) }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columns"
+      class="data-row"
+      (click)="openRow(row)"
+      (keydown.enter)="openRow(row)"
+      tabindex="0"
+      role="button"
+    ></tr>
+  </table>
+  <mat-paginator
+    [length]="totalElements"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPage($event)"
+  />
+</div>

@@ -1,0 +1,13 @@
+<button
+  mat-icon-button
+  type="button"
+  class="theme-toggle"
+  (click)="theme.toggle()"
+  [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+  [matTooltip]="theme.isDark() ? 'Light mode' : 'Dark mode'"
+>
+  <span class="theme-toggle__stack">
+    <mat-icon class="theme-toggle__sun" [class.theme-toggle__glyph--visible]="!theme.isDark()">light_mode</mat-icon>
+    <mat-icon class="theme-toggle__moon" [class.theme-toggle__glyph--visible]="theme.isDark()">dark_mode</mat-icon>
+  </span>
+</button>

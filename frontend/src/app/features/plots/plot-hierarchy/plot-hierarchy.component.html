@@ -1,0 +1,281 @@
+<app-page-header
+  icon="account_tree"
+  title="Plot hierarchy"
+  subtitle="Phases and khayabans — master data for plot grouping. Same layout language as Plots and Rentals dashboards."
+/>
+
+<p class="app-muted-lead">
+  Mutations require <strong>DIRECTOR</strong> or <strong>ADMIN</strong>. Field agents use plot filters on the main Plots
+  dashboard.
+</p>
+
+<mat-menu #phaseActionsMenu="matMenu">
+  <ng-template matMenuContent let-phase="phase">
+    <button mat-menu-item type="button" (click)="editPhase(phase)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item type="button" (click)="deletePhase(phase)">
+      <mat-icon color="warn">delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #khayabanActionsMenu="matMenu">
+  <ng-template matMenuContent let-k="khayaban">
+    <button mat-menu-item type="button" (click)="editKhayaban(k)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item type="button" (click)="deleteKhayaban(k)">
+      <mat-icon color="warn">delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<section class="data-view">
+  <mat-card appearance="outlined" class="data-view__card">
+    @if (loadingPhases) {
+      <mat-progress-bar mode="indeterminate" class="data-view__card-progress" aria-hidden="true" />
+    }
+    <mat-card-content>
+      <div class="data-view__section-head">
+        <h2 class="data-view__section-title">Phases</h2>
+        @if (canMutate()) {
+          <div class="data-view__toolbar">
+            <button mat-flat-button color="primary" type="button" (click)="createPhase()">
+              <mat-icon>add</mat-icon>
+              Add phase
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (loadingPhases) {
+        <div class="data-view__skeleton" aria-hidden="true">
+          @for (s of [1, 2, 3]; track s) {
+            <div class="data-view__skeleton-row"></div>
+          }
+        </div>
+      }
+
+      <div
+        class="data-view__table-scroller"
+        [class.data-view__table-scroller--dim]="loadingPhases"
+        [attr.aria-busy]="loadingPhases"
+      >
+        <table mat-table [dataSource]="phases" class="mat-elevation-z0 data-view__table hierarchy-table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              @if (canMutate()) {
+                <button
+                  mat-icon-button
+                  type="button"
+                  [matMenuTriggerFor]="phaseActionsMenu"
+                  [matMenuTriggerData]="{ phase: row }"
+                  aria-label="Phase actions"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              }
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="['name', 'id', 'actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'id', 'actions']"></tr>
+        </table>
+
+        @if (!loadingPhases && phases.length === 0) {
+          <app-empty-state
+            icon="layers_clear"
+            titleText="No phases yet"
+            hint="Add a phase to start organizing khayabans and plots."
+          >
+            @if (canMutate()) {
+              <button mat-flat-button color="primary" type="button" (click)="createPhase()">
+                <mat-icon>add</mat-icon>
+                Add phase
+              </button>
+            }
+          </app-empty-state>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section class="data-view">
+  @if (khayabanImportResult) {
+    <app-bulk-import-result-panel
+      [result]="khayabanImportResult"
+      heading="Khayabans import"
+      (dismiss)="clearKhayabanImportResult()"
+    />
+  }
+
+  <mat-card appearance="outlined" class="data-view__card">
+    @if (loadingKhayabans) {
+      <mat-progress-bar mode="indeterminate" class="data-view__card-progress" aria-hidden="true" />
+    }
+    <mat-card-content>
+      <div class="data-view__section-head">
+        <h2 class="data-view__section-title">Khayabans</h2>
+        <div class="data-view__toolbar">
+          @if (canExportKhayabansExcel()) {
+            <button
+              mat-stroked-button
+              type="button"
+              matTooltip="Download template to avoid upload errors"
+              matTooltipPosition="below"
+              (click)="downloadKhayabansImportTemplate()"
+              [disabled]="khayabanExcelTemplateDownloading || khayabanExcelExporting || khayabanExcelUploading || loadingKhayabans"
+            >
+              <span class="excel-action-btn__inner">
+                @if (khayabanExcelTemplateDownloading) {
+                  <mat-spinner diameter="20" />
+                } @else {
+                  <mat-icon>description</mat-icon>
+                }
+                Download template
+              </span>
+            </button>
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="exportKhayabansExcel()"
+              [disabled]="khayabanExcelTemplateDownloading || khayabanExcelExporting || khayabanExcelUploading || loadingKhayabans"
+            >
+              <span class="excel-action-btn__inner">
+                @if (khayabanExcelExporting) {
+                  <mat-spinner diameter="20" />
+                } @else {
+                  <mat-icon>download</mat-icon>
+                }
+                Export Excel
+              </span>
+            </button>
+          }
+          @if (canBulkImportKhayabansExcel()) {
+            <input
+              #khayabansExcelFileInput
+              type="file"
+              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              hidden
+              (change)="onKhayabansExcelSelected($event)"
+            />
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="khayabansExcelFileInput.click()"
+              [disabled]="khayabanExcelTemplateDownloading || khayabanExcelExporting || khayabanExcelUploading || loadingKhayabans"
+            >
+              <span class="excel-action-btn__inner">
+                @if (khayabanExcelUploading) {
+                  <mat-spinner diameter="20" />
+                } @else {
+                  <mat-icon>upload_file</mat-icon>
+                }
+                Upload Excel
+              </span>
+            </button>
+          }
+          @if (canMutate() && phaseFilter.value != null) {
+            <button mat-flat-button color="primary" type="button" (click)="createKhayaban()">
+              <mat-icon>add</mat-icon>
+              Add khayaban
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="data-view__filters hierarchy-filter">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Phase</mat-label>
+          <mat-select [formControl]="phaseFilter" placeholder="Select phase">
+            <mat-option [value]="null">— All / none —</mat-option>
+            @for (p of phases; track p.id) {
+              <mat-option [value]="p.id">{{ p.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-hint>Choose a phase to load its khayabans</mat-hint>
+        </mat-form-field>
+      </div>
+
+      @if (phaseFilter.value != null) {
+        @if (loadingKhayabans) {
+          <div class="data-view__skeleton" aria-hidden="true">
+            @for (s of [1, 2, 3]; track s) {
+              <div class="data-view__skeleton-row"></div>
+            }
+          </div>
+        }
+
+        <div
+          class="data-view__table-scroller"
+          [class.data-view__table-scroller--dim]="loadingKhayabans"
+          [attr.aria-busy]="loadingKhayabans"
+        >
+          <table mat-table [dataSource]="khayabans" class="mat-elevation-z0 data-view__table hierarchy-table">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="phaseId">
+              <th mat-header-cell *matHeaderCellDef>Phase ID</th>
+              <td mat-cell *matCellDef="let row">{{ row.phaseId }}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                @if (canMutate()) {
+                  <button
+                    mat-icon-button
+                    type="button"
+                    [matMenuTriggerFor]="khayabanActionsMenu"
+                    [matMenuTriggerData]="{ khayaban: row }"
+                    aria-label="Khayaban actions"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                }
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['name', 'phaseId', 'actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['name', 'phaseId', 'actions']"></tr>
+          </table>
+
+          @if (!loadingKhayabans && khayabans.length === 0) {
+            <app-empty-state
+              icon="signpost"
+              titleText="No khayabans in this phase"
+              hint="Add a khayaban to attach streets before creating plots."
+            >
+              @if (canMutate()) {
+                <button mat-flat-button color="primary" type="button" (click)="createKhayaban()">
+                  <mat-icon>add</mat-icon>
+                  Add khayaban
+                </button>
+              }
+            </app-empty-state>
+          }
+        </div>
+      } @else {
+        <app-empty-state
+          icon="filter_list"
+          titleText="Select a phase"
+          hint="Pick a phase above to list and manage its khayabans."
+        />
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

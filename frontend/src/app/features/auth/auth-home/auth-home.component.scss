@@ -1,0 +1,16 @@
+.auth-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.auth-card {
+  width: 100%;
+  border-radius: var(--app-radius-md, 12px);
+  box-shadow: var(--app-shadow-soft, none) !important;
+}
+
+.auth-card--accent {
+  border-left: 4px solid var(--mat-sys-primary, #1976d2);
+}

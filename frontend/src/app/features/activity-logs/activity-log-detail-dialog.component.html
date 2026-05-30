@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Activity detail</h2>
+<mat-dialog-content class="dlg">
+  <p class="dlg__summary">{{ data.summary }}</p>
+  <dl class="dlg__grid">
+    <dt>Timestamp (UTC)</dt>
+    <dd>{{ data.row.occurredAt }}</dd>
+    <dt>User</dt>
+    <dd>{{ data.row.actorEmail }}</dd>
+    <dt>User ID</dt>
+    <dd>{{ data.row.userId }}</dd>
+    <dt>Action</dt>
+    <dd>{{ data.row.action }}</dd>
+    <dt>Entity type</dt>
+    <dd>{{ data.row.entityType }}</dd>
+    <dt>Entity ID</dt>
+    <dd>{{ data.row.entityId }}</dd>
+    <dt>Log ID</dt>
+    <dd>{{ data.row.id }}</dd>
+  </dl>
+  <mat-divider />
+  <section class="dlg__audit-note">
+    <h3 class="dlg__audit-title">Change payload</h3>
+    <p class="dlg__audit-text">
+      The current API stores action, entity, and actor only. Before/after snapshots are not attached to this log record.
+    </p>
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Close</button>
+</mat-dialog-actions>

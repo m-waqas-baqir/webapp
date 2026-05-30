@@ -1,0 +1,12 @@
+.rental-table {
+  min-width: 720px;
+}
+
+.address-cell {
+  display: inline-block;
+  max-width: min(18rem, 40vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}

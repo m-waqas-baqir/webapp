@@ -1,0 +1,65 @@
+<mat-sidenav-container class="shell" [hasBackdrop]="isHandset()">
+  <mat-sidenav
+    #drawer
+    class="shell__sidenav"
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="sidenavOpen()"
+    (openedChange)="onSidenavOpenedChange($event)"
+  >
+    <div class="shell__brand">
+      <span class="shell__brand-mark">RI</span>
+      <div>
+        <div class="shell__brand-title">Real Investments</div>
+        <div class="shell__brand-sub">Consultancy</div>
+      </div>
+    </div>
+
+    <mat-nav-list class="shell__nav-list">
+      @for (group of visibleNavGroups(); track group.id) {
+        @if (group.label) {
+          <h3 matSubheader class="shell__nav-group-label">{{ group.label }}</h3>
+        }
+        @for (item of group.items; track item.route + item.label) {
+          <a
+            mat-list-item
+            [routerLink]="item.route"
+            routerLinkActive="shell__nav-active"
+          >
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span matListItemTitle>{{ item.label }}</span>
+          </a>
+        }
+      }
+    </mat-nav-list>
+
+    <div class="shell__sidenav-footer">
+      <button mat-button type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Sign out
+      </button>
+      <a mat-button routerLink="/">
+        <mat-icon>home</mat-icon>
+        Marketing site
+      </a>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="shell__toolbar shell__toolbar--glass app-header">
+      <button mat-icon-button type="button" class="shell__menu-btn" (click)="toggleSidenav()" aria-label="Toggle navigation">
+        <mat-icon>{{ sidenavOpen() ? 'close' : 'menu' }}</mat-icon>
+      </button>
+      <span class="shell__toolbar-title">Workspace</span>
+      @if (auth.user(); as u) {
+        <span class="shell__user-chip">{{ u.name }} · {{ u.role }}</span>
+      }
+      <span class="shell__spacer"></span>
+      <app-theme-toggle />
+      <button mat-stroked-button color="accent" type="button" routerLink="/">View site</button>
+    </mat-toolbar>
+
+    <main class="shell__content" [@routeFadeSlide]="contentRouteKey()">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

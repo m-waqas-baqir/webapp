@@ -1,0 +1,134 @@
+/* Theme toggle — MDC label must flex-center content; icons centered via inset+flex (no translate drift) */
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 0;
+  margin-inline-end: var(--space-md, 16px);
+}
+
+$toggle-size: 40px;
+
+/* Ensure projected label fills button and centers child stack */
+:host ::ng-deep .theme-toggle .mdc-button__label {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.theme-toggle.mat-mdc-icon-button {
+  --mdc-icon-button-state-layer-size: #{$toggle-size};
+
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: $toggle-size !important;
+  min-width: $toggle-size !important;
+  height: $toggle-size !important;
+  padding: 0 !important;
+
+  border-radius: 999px;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  background: color-mix(in srgb, var(--glass-bg, rgba(255, 255, 255, 0.08)) 100%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-soft, 0 4px 18px rgba(15, 23, 42, 0.08));
+  line-height: 0 !important;
+
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.theme-toggle.mat-mdc-icon-button .mat-mdc-button-touch-target {
+  width: $toggle-size !important;
+  height: $toggle-size !important;
+}
+
+.theme-toggle.mat-mdc-icon-button:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: var(--elev-2-shadow, 0 8px 24px rgba(15, 23, 42, 0.12));
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .theme-toggle.mat-mdc-icon-button {
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle.mat-mdc-icon-button,
+  .theme-toggle.mat-mdc-icon-button:hover:not(:disabled) {
+    transform: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+}
+
+.theme-toggle__stack {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.theme-toggle__sun,
+.theme-toggle__moon {
+  position: absolute;
+  inset: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 22px;
+
+  transition:
+    opacity 0.22s ease-in-out,
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle__sun {
+  transform: rotate(0deg) scale(1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-toggle__sun.theme-toggle__glyph--visible {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  pointer-events: auto;
+}
+
+.theme-toggle__sun:not(.theme-toggle__glyph--visible) {
+  transform: rotate(45deg) scale(0.7);
+}
+
+.theme-toggle__moon {
+  transform: rotate(-45deg) scale(0.75);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-toggle__moon.theme-toggle__glyph--visible {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  pointer-events: auto;
+}
+
+.theme-toggle__moon:not(.theme-toggle__glyph--visible) {
+  transform: rotate(45deg) scale(0.7);
+}

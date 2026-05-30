@@ -1,0 +1,113 @@
+.shell {
+  min-height: 100vh;
+  height: 100%;
+  background: var(--mat-sys-surface-container-lowest, #fafafa);
+}
+
+.shell__sidenav {
+  width: min(280px, 88vw);
+  border-right: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant, #cac4d0) 55%, transparent);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--app-shadow-soft, none);
+}
+
+.shell__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.06));
+}
+
+.shell__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--app-radius-md, 12px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #1565c0 0%, #5e35b1 55%, #7b1fa2 100%);
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(21, 101, 192, 0.25);
+}
+
+.shell__brand-title {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.shell__brand-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.shell__nav-list {
+  padding-top: 0;
+}
+
+.shell__nav-group-label {
+  margin: 0;
+  padding: 16px 16px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.55));
+}
+
+.shell__nav-active {
+  background: rgba(25, 118, 210, 0.08);
+}
+
+.shell__sidenav-footer {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.06));
+}
+
+.shell__toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.shell__menu-btn {
+  margin-right: 8px;
+}
+
+.shell__toolbar-title {
+  font-weight: 600;
+}
+
+.shell__spacer {
+  flex: 1;
+}
+
+.shell__content {
+  padding: clamp(16px, 3vw, 28px);
+  max-width: var(--app-content-max, 1200px);
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 960px) {
+  .shell__toolbar-title {
+    font-size: 1rem;
+  }
+
+  .shell__user-chip {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .shell__toolbar .mat-mdc-outlined-button {
+    display: none;
+  }
+}

@@ -1,0 +1,187 @@
+/**
+ * Shared layout for list/table screens (plots, rentals, hierarchy, owners).
+ * Use with classes: data-view, data-view__toolbar, data-view__card, …
+ */
+
+.data-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.data-view__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/** Inline icon/spinner + label inside mat buttons (Excel import/export). */
+.excel-action-btn__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.data-view__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: var(--shadow-premium-soft, var(--elev-1-shadow, var(--shadow-soft)));
+  transition:
+    transform var(--motion-ui, 260ms) var(--ease-smooth, ease-out),
+    box-shadow var(--motion-ui, 260ms) var(--ease-smooth, ease-out);
+}
+
+.data-view__card-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1;
+  border-radius: var(--app-radius-card) var(--app-radius-card) 0 0;
+}
+
+.data-view__card .mat-mdc-card-content {
+  position: relative;
+  padding-top: var(--space-lg) !important;
+}
+
+.data-view__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.data-view__section-title {
+  margin: 0;
+  font-size: var(--text-section-size);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--mat-sys-on-surface);
+}
+
+.data-view__section-head .data-view__toolbar {
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.data-view__filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.data-view__filters .mat-mdc-form-field {
+  width: 100%;
+}
+
+.data-view__table-scroller {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-view__table-scroller--dim {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.data-view__table {
+  width: 100%;
+}
+
+.data-view__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+.data-view__skeleton-row {
+  height: 2.5rem;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--mat-sys-outline-variant) 25%, transparent) 0%,
+    color-mix(in srgb, var(--mat-sys-outline-variant) 12%, transparent) 50%,
+    color-mix(in srgb, var(--mat-sys-outline-variant) 25%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: data-view-skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes data-view-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.data-view__status-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  color: var(--mat-sys-primary);
+}
+
+.data-view .mat-column-actions {
+  width: 3rem;
+  text-align: right;
+}
+
+.app-muted-lead {
+  margin: 0 0 var(--space-lg);
+  max-width: 72ch;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: var(--text-body-size);
+  line-height: 1.5;
+}
+
+/* Dialog form grids */
+.app-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+  min-width: min(100%, 22rem);
+}
+
+.app-dialog-form > .mat-mdc-form-field {
+  width: 100%;
+}
+
+.app-dialog-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.app-dialog-form__grid .mat-mdc-form-field {
+  width: 100%;
+}
+
+.app-dialog-form__grid-span-2 {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 560px) {
+  .app-dialog-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-dialog-form__grid-span-2 {
+    grid-column: auto;
+  }
+}

@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'New owner (registry)' : 'Edit owner (registry)' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="app-dialog-form" (ngSubmit)="submit()">
+    <p class="owner-form__hint">
+      Owner registry stores CNIC/contact per backend <code>/api/v1/owners</code> — distinct from user accounts on
+      plots/rentals.
+    </p>
+
+    @if (loading) {
+      <div class="owner-form__loading" aria-busy="true">
+        <mat-progress-spinner mode="indeterminate" diameter="36" />
+        <span>Loading…</span>
+      </div>
+    }
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" autocomplete="name" />
+      @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <mat-error>Name is required</mat-error>
+      }
+      @if (form.controls.name.touched && form.controls.name.hasError('maxlength')) {
+        <mat-error>At most 200 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Contact info</mat-label>
+      <textarea matInput formControlName="contactInfo" rows="2" autocomplete="off"></textarea>
+      @if (form.controls.contactInfo.touched && form.controls.contactInfo.hasError('required')) {
+        <mat-error>Contact is required</mat-error>
+      }
+      @if (form.controls.contactInfo.touched && form.controls.contactInfo.hasError('maxlength')) {
+        <mat-error>At most 500 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>CNIC</mat-label>
+      <input matInput formControlName="cnic" autocomplete="off" />
+      @if (form.controls.cnic.touched && form.controls.cnic.hasError('required')) {
+        <mat-error>CNIC is required</mat-error>
+      }
+      @if (form.controls.cnic.touched && form.controls.cnic.hasError('minlength')) {
+        <mat-error>Too short</mat-error>
+      }
+      @if (form.controls.cnic.touched && form.controls.cnic.hasError('maxlength')) {
+        <mat-error>At most 20 characters</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()" [disabled]="loading">Cancel</button>
+  <button mat-flat-button color="primary" type="button" [disabled]="loading" (click)="submit()">Save</button>
+</mat-dialog-actions>

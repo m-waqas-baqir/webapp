@@ -1,0 +1,48 @@
+.page-header {
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+}
+
+.page-header__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.page-header__icon-wrap {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+  color: var(--mat-sys-primary);
+}
+
+.page-header__icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.page-header__text {
+  min-width: 0;
+}
+
+.page-header__title {
+  margin: 0 0 6px;
+  font-size: var(--text-page-title-size);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--mat-sys-on-surface);
+}
+
+.page-header__subtitle {
+  margin: 0;
+  font-size: var(--text-body-size);
+  line-height: 1.45;
+  color: var(--mat-sys-on-surface-variant);
+  max-width: 52ch;
+}

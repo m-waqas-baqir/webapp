@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form mat-dialog-content [formGroup]="form" (ngSubmit)="submit()" class="app-dialog-form">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Phase name</mat-label>
+    <input matInput formControlName="name" autocomplete="off" />
+    @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+      <mat-error>Name is required</mat-error>
+    }
+    @if (form.controls.name.touched && form.controls.name.hasError('maxlength')) {
+      <mat-error>At most 200 characters</mat-error>
+    }
+  </mat-form-field>
+</form>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" type="button" (click)="submit()">
+    {{ data.mode === 'edit' ? 'Save' : 'Create' }}
+  </button>
+</mat-dialog-actions>

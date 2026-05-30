@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit rental' : 'Add rental property' }}</h2>
+
+<form mat-dialog-content [formGroup]="form" (ngSubmit)="submit()" class="app-dialog-form">
+  <div class="app-dialog-form__grid">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="app-dialog-form__grid-span-2">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" autocomplete="off" />
+      @if (form.get('title')?.touched && form.get('title')?.invalid) {
+        <mat-error>Required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        @for (t of typeOptions; track t) {
+          <mat-option [value]="t">{{ t }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for (s of statusOptions; track s) {
+          <mat-option [value]="s">{{ s }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="app-dialog-form__grid-span-2">
+      <mat-label>Address</mat-label>
+      <textarea matInput formControlName="address" rows="2"></textarea>
+      @if (form.get('address')?.touched && form.get('address')?.invalid) {
+        <mat-error>Required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Rent amount</mat-label>
+      <input matInput type="number" formControlName="rentAmount" step="0.01" />
+      @if (form.get('rentAmount')?.touched && form.get('rentAmount')?.invalid) {
+        <mat-error>Enter a valid amount</mat-error>
+      }
+    </mat-form-field>
+
+    @if (canEditAssignments) {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Registry owner</mat-label>
+        <mat-select formControlName="ownerId">
+          @if (loadingOwners) {
+            <mat-option disabled>Loading…</mat-option>
+          }
+          @for (o of owners; track o.id) {
+            <mat-option [value]="o.id">{{ o.name }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('ownerId')?.touched && form.get('ownerId')?.invalid) {
+          <mat-error>Required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Assigned agent</mat-label>
+        <mat-select formControlName="assignedAgentId">
+          <mat-option [value]="null">None</mat-option>
+          @if (loadingAgents) {
+            <mat-option disabled>Loading…</mat-option>
+          }
+          @for (a of agents; track a.id) {
+            <mat-option [value]="a.id">{{ a.name }} ({{ a.email }})</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()" [disabled]="saving">Cancel</button>
+  <button mat-flat-button color="primary" type="button" (click)="submit()" [disabled]="saving">
+    @if (saving) {
+      <span>Saving…</span>
+    } @else {
+      <span>{{ isEdit ? 'Save' : 'Create' }}</span>
+    }
+  </button>
+</mat-dialog-actions>

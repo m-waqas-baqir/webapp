@@ -1,0 +1,170 @@
+@if (auth.hasAnyRole(UserRole.AGENT)) {
+  <app-page-header
+    icon="waving_hand"
+    title="Your workspace"
+    subtitle="Pick up where you left off — plots and rentals assigned to you."
+  />
+} @else {
+  <app-page-header
+    icon="dashboard"
+    title="Operations overview"
+    subtitle="Live counts across inventory, people, and audit activity."
+  />
+}
+
+@if (snapshotLoading) {
+  <mat-progress-bar mode="indeterminate" class="dash-page-progress" aria-label="Loading dashboard" />
+}
+
+<div class="dash-grid" [class.dash-grid--dim]="snapshotLoading">
+  @if (auth.hasAnyRole(UserRole.AGENT)) {
+    <mat-card class="dash-card dash-card--hero card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="dash-card__avatar dash-card__avatar--accent">home_work</mat-icon>
+        <mat-card-title>Start with My Properties</mat-card-title>
+        <mat-card-subtitle>
+          @if (auth.user(); as u) {
+            {{ u.name }} · {{ u.role }}
+          }
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="dash-hero-copy">
+          Open plots and rentals in one place. Numbers below reflect <strong>your</strong> visible inventory from the server.
+        </p>
+        <div class="dash-stat-row" role="group" aria-label="Your property counts">
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ plotTotal | number }}</span>
+            <span class="dash-stat__label">Plots in scope</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ rentalTotal | number }}</span>
+            <span class="dash-stat__label">Rentals in scope</span>
+          </div>
+          <div class="dash-stat dash-stat--wide">
+            <span class="dash-stat__value">{{ agentPropertyHeadline | number }}</span>
+            <span class="dash-stat__label">Total listings (plots + rentals)</span>
+          </div>
+        </div>
+        <a mat-flat-button color="primary" class="btn-primary dash-cta" routerLink="/app/my-properties">
+          <mat-icon>arrow_forward</mat-icon>
+          View My Properties
+        </a>
+      </mat-card-content>
+    </mat-card>
+
+    @if (auth.hasPermission(PERMISSION_CODES.VIEW_ACTIVITY_LOGS)) {
+      <mat-card class="dash-card card" appearance="outlined">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="dash-card__avatar">history</mat-icon>
+          <mat-card-title>Recent activity for you</mat-card-title>
+          <mat-card-subtitle>Latest changes linked to your access</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (agentActivityLoading) {
+            <mat-progress-bar mode="indeterminate" />
+          } @else if (!agentActivity.length) {
+            <p class="dash-empty">No recent audit events, or none match your filters yet.</p>
+          } @else {
+            <mat-nav-list class="dash-list">
+              @for (row of agentActivity; track row.id) {
+                <a mat-list-item routerLink="/app/activity-logs">
+                  <span matListItemTitle>{{ row.actorEmail }}</span>
+                  <span matListItemLine>{{ activitySummary(row) }}</span>
+                  <span matListItemLine class="dash-muted">{{ row.occurredAt }}</span>
+                </a>
+              }
+            </mat-nav-list>
+            <a mat-button color="primary" routerLink="/app/activity-logs">Open activity logs</a>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  } @else if (auth.hasAnyRole(UserRole.DIRECTOR, UserRole.ADMIN)) {
+    <mat-card class="dash-card dash-card--hero card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="dash-card__avatar">insights</mat-icon>
+        <mat-card-title>System at a glance</mat-card-title>
+        <mat-card-subtitle>
+          @if (auth.user(); as u) {
+            {{ u.name }} · {{ u.role }}
+          }
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="dash-hero-copy">
+          Key volumes from the live APIs — use this as your 3-second health check before diving into modules.
+        </p>
+        <div class="dash-stat-grid" role="group" aria-label="System metrics">
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ plotTotal | number }}</span>
+            <span class="dash-stat__label">Plots</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ rentalTotal | number }}</span>
+            <span class="dash-stat__label">Rentals</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ ownerTotal | number }}</span>
+            <span class="dash-stat__label">Owners</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ plotTotal + rentalTotal | number }}</span>
+            <span class="dash-stat__label">Total listings</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ activityLogTotal | number }}</span>
+            <span class="dash-stat__label">Audit events (log)</span>
+          </div>
+          <div class="dash-stat">
+            <span class="dash-stat__value">{{ userDirectoryTotal | number }}</span>
+            <span class="dash-stat__label">User accounts</span>
+          </div>
+        </div>
+
+        <div class="dash-quick-row">
+          <span class="dash-quick-label">Jump to</span>
+          <a mat-stroked-button color="primary" routerLink="/app/activity-logs">Activity Logs</a>
+          @if (auth.hasAnyRole(UserRole.DIRECTOR)) {
+            <a mat-stroked-button color="primary" routerLink="/app/admin/reports">Reports</a>
+          }
+          <a mat-stroked-button color="primary" routerLink="/app/plots">Plots</a>
+          <a mat-stroked-button color="primary" routerLink="/app/admin/users">Users</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="dash-card card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="dash-card__avatar">history</mat-icon>
+        <mat-card-title>Recent activity</mat-card-title>
+        <mat-card-subtitle>Latest five audit events — system-wide</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (snapshotLoading) {
+          <p class="dash-empty">Loading…</p>
+        } @else if (!recentActivity.length) {
+          <p class="dash-empty">No activity recorded yet, or the log is empty for this window.</p>
+        } @else {
+          <mat-nav-list class="dash-list">
+            @for (row of recentActivity; track row.id) {
+              <a mat-list-item routerLink="/app/activity-logs">
+                <span matListItemTitle>{{ row.actorEmail }}</span>
+                <span matListItemLine>{{ activitySummary(row) }}</span>
+                <span matListItemLine class="dash-muted">{{ row.occurredAt }}</span>
+              </a>
+            }
+          </mat-nav-list>
+          <a mat-button color="primary" routerLink="/app/activity-logs">View all logs</a>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <mat-card class="dash-card dash-card--meta card" appearance="outlined">
+    <mat-card-content class="dash-meta">
+      <span class="dash-meta__label">Release</span>
+      <span class="dash-meta__value">v{{ appVersion }}</span>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,131 @@
+.onboarding {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.onboarding__context {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
+  background: color-mix(in srgb, var(--mat-sys-secondary-container, #e8def8) 55%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--mat-sys-on-surface, rgba(0, 0, 0, 0.87));
+}
+
+.onboarding__context-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--mat-sys-primary);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.onboarding__context-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.onboarding__context-sep {
+  margin: 0 0.35em;
+  opacity: 0.55;
+}
+
+.onboarding__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.onboarding__step {
+  margin: 0;
+}
+
+.step-card {
+  border-radius: 14px !important;
+}
+
+.step-card .mat-mdc-card-header {
+  padding-bottom: 0;
+}
+
+.step-card__num {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
+  color: var(--mat-sys-primary);
+}
+
+.step-card__body {
+  margin: 0 0 16px;
+  line-height: 1.55;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.9375rem;
+}
+
+.step-card__btn-second {
+  margin-left: 8px;
+}
+
+.training-empty {
+  margin-top: 16px;
+  border-radius: 14px !important;
+}
+
+.onboarding__complete {
+  margin-top: 28px;
+  border-radius: 14px !important;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 22%, transparent);
+  background: color-mix(in srgb, var(--mat-sys-primary-container, #e3f2fd) 35%, transparent);
+}
+
+.onboarding__complete-inner {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 20px !important;
+}
+
+.onboarding__complete-icon {
+  flex-shrink: 0;
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: var(--mat-sys-primary);
+}
+
+.onboarding__complete-title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.onboarding__complete-copy {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  .step-card__btn-second {
+    margin-left: 0;
+    margin-top: 8px;
+    display: inline-flex;
+  }
+}

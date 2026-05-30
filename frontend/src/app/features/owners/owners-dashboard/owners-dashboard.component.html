@@ -1,0 +1,112 @@
+<app-page-header
+  icon="badge"
+  title="Owner registry"
+  subtitle="Sensitive CNIC/contact data is masked by the API for non-director roles. Plots and rentals link to this registry separately."
+/>
+
+<mat-menu #ownerActionsMenu="matMenu">
+  <ng-template matMenuContent let-owner="owner">
+    <button mat-menu-item type="button" (click)="openEdit(owner)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item type="button" (click)="deleteOwner(owner)">
+      <mat-icon color="warn">delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<section class="data-view">
+  <div class="data-view__toolbar">
+    @if (canMutate()) {
+      <button mat-flat-button color="primary" type="button" (click)="openCreate()">
+        <mat-icon>person_add</mat-icon>
+        Add owner
+      </button>
+    }
+  </div>
+
+  <mat-card appearance="outlined" class="data-view__card">
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate" class="data-view__card-progress" aria-hidden="true" />
+    }
+    <mat-card-content>
+      @if (loading) {
+        <div class="data-view__skeleton" aria-hidden="true">
+          @for (s of [1, 2, 3, 4, 5]; track s) {
+            <div class="data-view__skeleton-row"></div>
+          }
+        </div>
+      }
+
+      <div
+        class="data-view__table-scroller"
+        [class.data-view__table-scroller--dim]="loading"
+        [attr.aria-busy]="loading"
+      >
+        <table mat-table [dataSource]="owners" class="mat-elevation-z0 data-view__table owners-table">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="contactInfo">
+            <th mat-header-cell *matHeaderCellDef>Contact</th>
+            <td mat-cell *matCellDef="let row">{{ row.contactInfo ?? '—' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cnic">
+            <th mat-header-cell *matHeaderCellDef>CNIC</th>
+            <td mat-cell *matCellDef="let row">{{ row.cnic ?? '—' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              @if (canMutate()) {
+                <button
+                  mat-icon-button
+                  type="button"
+                  [matMenuTriggerFor]="ownerActionsMenu"
+                  [matMenuTriggerData]="{ owner: row }"
+                  aria-label="Owner actions"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              }
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+
+        @if (!loading && owners.length === 0) {
+          <app-empty-state
+            icon="person_off"
+            titleText="No owners in registry"
+            hint="Create an owner record to link plots and rentals to registry contacts."
+          >
+            @if (canMutate()) {
+              <button mat-flat-button color="primary" type="button" (click)="openCreate()">
+                <mat-icon>person_add</mat-icon>
+                Add owner
+              </button>
+            }
+          </app-empty-state>
+        }
+
+        <mat-paginator
+          [length]="totalElements"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="onPage($event)"
+        />
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

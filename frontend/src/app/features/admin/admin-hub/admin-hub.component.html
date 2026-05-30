@@ -1,0 +1,21 @@
+<app-page-header
+  icon="admin_panel_settings"
+  title="Administration"
+  subtitle="Listing analytics for directors; user accounts for directors and admins."
+/>
+
+<nav class="subnav" aria-label="Admin sections">
+  <a mat-button *appHasRole="UserRole.DIRECTOR" routerLink="reports" routerLinkActive="active">
+    Listing owner report
+  </a>
+  <a
+    mat-button
+    *appHasRole="[UserRole.DIRECTOR, UserRole.ADMIN]"
+    routerLink="users"
+    routerLinkActive="active"
+  >
+    Users
+  </a>
+</nav>
+
+<router-outlet />

@@ -1,0 +1,64 @@
+/* Real Investments — shared logo treatment (assets live under /public → served at root) */
+
+:root {
+  --brand-navy: #0b1f3b;
+  --brand-gold-mid: #c4a574;
+  --brand-logo-height-toolbar: clamp(28px, 2.5vw, 34px);
+  --brand-logo-height-sidenav: clamp(32px, 3vw, 40px);
+  --brand-logo-height-landing: clamp(30px, 2.8vw, 38px);
+  --brand-logo-height-login-card: clamp(36px, 4vw, 48px);
+  --brand-logo-height-strip: clamp(26px, 2.2vw, 32px);
+}
+
+.brand-logo {
+  display: block;
+  height: var(--brand-logo-height-toolbar);
+  width: auto;
+  max-width: min(220px, 52vw);
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-logo--sidenav {
+  height: var(--brand-logo-height-sidenav);
+  max-width: 100%;
+}
+
+.brand-logo--toolbar {
+  height: var(--brand-logo-height-toolbar);
+  max-width: min(200px, 40vw);
+  margin-right: 12px;
+}
+
+.brand-logo--landing {
+  height: var(--brand-logo-height-landing);
+  max-width: min(240px, 56vw);
+}
+
+.brand-logo--login-top {
+  height: clamp(26px, 3vw, 32px);
+  max-width: min(200px, 50vw);
+}
+
+.brand-logo--login-card {
+  height: var(--brand-logo-height-login-card);
+  max-width: 220px;
+  margin: 0 auto 4px;
+}
+
+.brand-logo--strip {
+  height: var(--brand-logo-height-strip);
+  max-width: min(200px, 48vw);
+}
+
+/* Mobile: icon-only in tight headers */
+@media (max-width: 480px) {
+  .brand-logo--toolbar {
+    max-width: 42px;
+    margin-right: 8px;
+  }
+
+  .brand-logo--toolbar.brand-logo--hide-mark-mobile {
+    /* class paired with full logo img; swap handled in template via two imgs if needed */
+  }
+}

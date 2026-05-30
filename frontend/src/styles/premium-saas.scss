@@ -1,0 +1,196 @@
+/**
+ * Premium SaaS visual layer — glass, depth, motion.
+ * Loaded after micro-interactions so these rules refine (not replace) behaviour.
+ */
+
+html:is(.app-dark-theme, .dark-theme) {
+  --bg-glass: rgba(255, 255, 255, 0.06);
+  --shadow-premium-soft: var(--shadow-soft, 0 10px 30px rgba(0, 0, 0, 0.4));
+  --shadow-premium-elevated: var(--shadow-medium, 0 16px 42px rgba(0, 0, 0, 0.46));
+}
+
+.app-glass,
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: var(--premium-blur);
+  -webkit-backdrop-filter: var(--premium-blur);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: var(--shadow-premium-soft, var(--shadow-soft));
+  border: 1px solid color-mix(in srgb, #ffffff 35%, transparent);
+  transition:
+    box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+html:is(.app-dark-theme, .dark-theme) .app-glass,
+html:is(.app-dark-theme, .dark-theme) .glass {
+  border-color: var(--glass-border, rgba(255, 255, 255, 0.08));
+  box-shadow: var(--shadow-soft);
+}
+
+/* Landing: map frame + services grid + cards (global to satisfy component style budgets) */
+.landing__map-section.landing__section {
+  max-width: min(100%, calc(var(--app-content-max) + 80px));
+}
+
+.landing__map-frame {
+  border-radius: var(--radius-xl, 20px);
+  overflow: hidden;
+  box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow));
+}
+
+.landing__services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+  align-items: stretch;
+}
+
+.landing__card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-premium-soft, var(--elev-1-shadow, var(--shadow-soft)));
+  transition:
+    transform var(--motion-ui, 260ms) var(--ease-smooth, ease-out),
+    box-shadow var(--motion-ui, 260ms) var(--ease-smooth, ease-out);
+
+  .mat-mdc-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg) !important;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow, var(--shadow-medium)));
+  }
+}
+
+.landing__card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--app-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  background: linear-gradient(135deg, rgba(25, 118, 210, 0.1), rgba(103, 58, 183, 0.08));
+
+  mat-icon {
+    color: var(--primary, #1565c0);
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+html:is(.app-dark-theme, .dark-theme) .landing__card-icon {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary, #818cf8) 18%, transparent),
+    color-mix(in srgb, var(--accent, #a78bfa) 14%, transparent)
+  );
+
+  mat-icon {
+    color: var(--primary, #818cf8);
+  }
+}
+
+.landing__card-title {
+  margin: 0 0 var(--space-sm);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, rgba(0, 0, 0, 0.88));
+}
+
+.landing__card-text {
+  margin: 0;
+  flex: 1;
+  font-size: var(--text-body-size);
+  line-height: 1.55;
+  color: var(--text-secondary, rgba(0, 0, 0, 0.55));
+}
+
+.landing__hero-highlight {
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-premium-soft, var(--elev-1-shadow, var(--shadow-soft)));
+  transition:
+    transform var(--motion-ui, 260ms) var(--ease-smooth, ease-out),
+    box-shadow var(--motion-ui, 260ms) var(--ease-smooth, ease-out);
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow, var(--shadow-medium)));
+  }
+
+  .mat-mdc-card-content {
+    padding: var(--space-lg) !important;
+  }
+}
+
+/* Dialogs — subtle entrance + elevation (plot forms, confirmations, etc.) */
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  border-radius: 16px;
+  box-shadow: var(--shadow-premium-elevated, var(--elev-3-shadow, var(--shadow-strong)));
+  background: color-mix(in srgb, var(--mat-sys-surface, #fff) 94%, var(--bg-glass) 6%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mat-mdc-dialog-container .mat-mdc-dialog-surface {
+    animation: app-premium-dialog-in var(--motion-ui, 320ms) var(--ease-smooth, ease-out) both;
+  }
+}
+
+@keyframes app-premium-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Workspace shell — glass sidenav */
+.shell__sidenav.mat-drawer {
+  background: color-mix(in srgb, var(--bg-glass) 92%, var(--mat-sys-surface, #fff) 8%);
+  backdrop-filter: var(--premium-blur);
+  -webkit-backdrop-filter: var(--premium-blur);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell__sidenav.mat-drawer {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .mat-mdc-dialog-container .mat-mdc-dialog-surface {
+    animation: none;
+  }
+}
+
+/* Cards — premium lift (dashboard + data views) */
+@media (prefers-reduced-motion: no-preference) {
+  .data-view__card:hover,
+  .dash-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow));
+  }
+
+  a.mat-mdc-button-base:hover:not(:disabled),
+  button.mat-mdc-button-base:hover:not(:disabled) {
+    transform: scale(1.03);
+  }
+
+  a.mat-mdc-unelevated-button.mat-primary:hover:not(:disabled),
+  button.mat-mdc-unelevated-button.mat-primary:hover:not(:disabled) {
+    filter: brightness(1.06)
+      drop-shadow(0 0 14px color-mix(in srgb, var(--mat-sys-primary) 28%, transparent));
+  }
+}

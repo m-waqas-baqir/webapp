@@ -1,0 +1,171 @@
+<div class="landing">
+  <header class="landing__header u-glass-topnav app-header">
+    <a routerLink="/" class="landing__logo" aria-label="Real Investments home">
+      <span class="landing__logo-badge">RI</span>
+      <div class="landing__logo-text">
+        <span class="landing__logo-name brand">Real Investments</span>
+        <span class="landing__logo-tag">Real estate consultancy · Karachi</span>
+      </div>
+    </a>
+    <nav class="landing__nav" aria-label="Primary">
+      <app-theme-toggle />
+      <a mat-button routerLink="/login">Sign In</a>
+      <a mat-flat-button color="primary" class="btn-primary" routerLink="/login">Explore Properties</a>
+    </nav>
+  </header>
+
+  <main class="landing__main">
+    <!-- Hero -->
+    <section class="landing__hero" aria-labelledby="hero-heading">
+      <div class="landing__hero-blobs" aria-hidden="true">
+        <div class="landing__hero-blob landing__hero-blob--a"></div>
+        <div class="landing__hero-blob landing__hero-blob--b"></div>
+      </div>
+      <div class="landing__hero-inner">
+        <div class="landing__hero-grid">
+          <div class="landing__hero-copy">
+            <h1 id="hero-heading" class="landing__headline fade-up">
+              Trusted Real Estate Consultancy in Karachi
+            </h1>
+            <p class="landing__lede fade-up fade-up--delay-1">
+              Buy, sell, and rent premium properties with expert guidance and verified listings.
+            </p>
+            <div class="landing__actions fade-up fade-up--delay-2">
+              <a mat-flat-button color="primary" class="btn-primary" routerLink="/login">Explore Properties</a>
+              <a mat-stroked-button color="primary" href="#contact">Contact Us</a>
+            </div>
+          </div>
+
+          <mat-card class="landing__hero-highlight u-glass-feature-card fade-up fade-up--delay-3" appearance="outlined">
+            <mat-card-content>
+              <h2 class="landing__highlight-title">Why Real Investments?</h2>
+              <ul class="landing__highlight-list">
+                <li>
+                  <mat-icon aria-hidden="true">verified</mat-icon>
+                  <span>Verified listings</span>
+                </li>
+                <li>
+                  <mat-icon aria-hidden="true">groups</mat-icon>
+                  <span>Experienced agents</span>
+                </li>
+                <li>
+                  <mat-icon aria-hidden="true">handshake</mat-icon>
+                  <span>Transparent transactions</span>
+                </li>
+              </ul>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="landing__section" aria-labelledby="services-heading">
+      <h2 id="services-heading" class="landing__section-title">Our Services</h2>
+      <p class="landing__section-intro landing__section-intro--slider">
+        Smooth continuous scroll — pauses when you hover.
+      </p>
+      <div class="slider" aria-label="Our services">
+        <div class="slider-track">
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>landscape</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Plot Sales</h3>
+              <p class="landing__card-text">
+                Prime residential and commercial plots across DHA and beyond
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>vpn_key</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Property Rentals</h3>
+              <p class="landing__card-text">
+                Verified residential and commercial rental options
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Investment Advisory</h3>
+              <p class="landing__card-text">
+                Guidance for high-return real estate investments
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>landscape</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Plot Sales</h3>
+              <p class="landing__card-text">
+                Prime residential and commercial plots across DHA and beyond
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>vpn_key</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Property Rentals</h3>
+              <p class="landing__card-text">
+                Verified residential and commercial rental options
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="slide-card landing__card glass" appearance="outlined">
+            <mat-card-content>
+              <div class="landing__card-icon" aria-hidden="true">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <h3 class="landing__card-title">Investment Advisory</h3>
+              <p class="landing__card-text">
+                Guidance for high-return real estate investments
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </section>
+
+    <!-- DHA Phase 8 map (Leaflet: street / satellite / fullscreen / external Google Maps) -->
+    <section class="landing__section landing__map-section" aria-labelledby="map-heading">
+      <h2 id="map-heading" class="landing__section-title">DHA Phase 8 on the map</h2>
+      <p class="landing__section-intro">
+        A snapshot of the area we know well — explore blocks, khayabans, and commercial belts (listings in
+        the app).
+      </p>
+      <div class="landing__map-frame">
+        <app-dha-map />
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="landing__footer">
+    <div class="landing__footer-inner">
+      <div class="landing__footer-brand-block">
+        <span class="landing__footer-brand">Real Investments</span>
+        <p class="landing__footer-tagline">Your trusted real estate partner</p>
+      </div>
+      <div class="landing__footer-contact">
+        <p><strong>Contact</strong></p>
+        <p>
+          <a href="mailto:hello@realinvestments.pk">hello&#64;realinvestments.pk</a>
+        </p>
+        <p><span class="landing__footer-placeholder">+92 300 0000000</span></p>
+        <p class="landing__footer-address">
+          <span class="landing__footer-placeholder">Karachi, Pakistan</span>
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,150 @@
+<div class="onboarding">
+  <div class="onboarding__context" role="status">
+    <mat-icon class="onboarding__context-icon" aria-hidden="true">info</mat-icon>
+    <div class="onboarding__context-text">
+      <strong>This is a training environment</strong>
+      <span class="onboarding__context-sep">·</span>
+      <span>You are viewing: {{ viewingModeLabel() }}</span>
+    </div>
+  </div>
+
+  <app-page-header icon="school" [title]="mainTitle()" [subtitle]="purposeLine()" />
+
+  @if (isAgent()) {
+    <ol class="onboarding__steps" aria-label="Agent onboarding steps">
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">1</div>
+            <mat-card-title>Dashboard overview</mat-card-title>
+            <mat-card-subtitle>Your starting point after sign-in</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="step-card__body">
+              The dashboard summarizes plots and rentals in <strong>your</strong> scope and links you to My Properties.
+              Check counts there whenever you log in.
+            </p>
+            <a mat-flat-button color="primary" routerLink="/app/dashboard">Open Dashboard</a>
+          </mat-card-content>
+        </mat-card>
+      </li>
+
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">2</div>
+            <mat-card-title>Your properties</mat-card-title>
+            <mat-card-subtitle>Where assigned work lives</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="step-card__body">
+              Use <strong>My Properties</strong> to open plots and rentals you can work with — the same lists as the main
+              modules, filtered for your role.
+            </p>
+            <a mat-flat-button color="primary" routerLink="/app/my-properties">View My Properties</a>
+          </mat-card-content>
+        </mat-card>
+      </li>
+
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">3</div>
+            <mat-card-title>Managing your work</mat-card-title>
+            <mat-card-subtitle>View, update, and follow up</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="step-card__body">
+              From plots or rentals, open a row to view details, apply allowed edits, and keep assignments accurate.
+              If something is blocked, your admin or director can adjust permissions.
+            </p>
+            <a mat-stroked-button color="primary" routerLink="/app/plots">Open Plots</a>
+            <a mat-stroked-button color="primary" routerLink="/app/rentals" class="step-card__btn-second">Open Rentals</a>
+          </mat-card-content>
+        </mat-card>
+      </li>
+    </ol>
+  } @else if (isStaff()) {
+    <ol class="onboarding__steps" aria-label="Staff onboarding steps">
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">1</div>
+            <mat-card-title>Monitor activity</mat-card-title>
+            <mat-card-subtitle>System-wide audit trail</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="step-card__body">
+              <strong>Activity Logs</strong> show who changed what across plots, rentals, and owners. Use them to answer
+              “what happened?” and to spot unusual patterns early.
+            </p>
+            <a mat-flat-button color="primary" routerLink="/app/activity-logs">Open Activity Logs</a>
+          </mat-card-content>
+        </mat-card>
+      </li>
+
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">2</div>
+            <mat-card-title>Analyze reports</mat-card-title>
+            <mat-card-subtitle>Listings and ownership insight</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            @if (isDirector()) {
+              <p class="step-card__body">
+                The <strong>listing owner report</strong> ties listings to owners and agent assignment — use it for
+                portfolio and coverage decisions.
+              </p>
+              <a mat-flat-button color="primary" routerLink="/app/admin/reports">Go to Reports</a>
+            } @else {
+              <p class="step-card__body">
+                Formal <strong>director-level</strong> roll-up reports are reserved for Directors. As Admin, use
+                <strong>Plots</strong> and <strong>Owners</strong> to review live data and support agents day to day.
+              </p>
+              <a mat-flat-button color="primary" routerLink="/app/plots">Open Plots</a>
+              <a mat-stroked-button color="primary" routerLink="/app/owners" class="step-card__btn-second">Open Owners</a>
+            }
+          </mat-card-content>
+        </mat-card>
+      </li>
+
+      <li class="onboarding__step">
+        <mat-card appearance="outlined" class="step-card">
+          <mat-card-header>
+            <div mat-card-avatar class="step-card__num">3</div>
+            <mat-card-title>Manage users</mat-card-title>
+            <mat-card-subtitle>Accounts and access</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="step-card__body">
+              <strong>User management</strong> is where you invite people, set roles, and keep the team aligned with
+              what they should see in the app.
+            </p>
+            <a mat-flat-button color="primary" routerLink="/app/admin/users">Go to Users</a>
+          </mat-card-content>
+        </mat-card>
+      </li>
+    </ol>
+  } @else {
+    <mat-card appearance="outlined" class="training-empty">
+      <mat-card-content>Sign in to see training for your role.</mat-card-content>
+    </mat-card>
+  }
+
+  @if (isAgent() || isStaff()) {
+    <mat-card appearance="outlined" class="onboarding__complete">
+      <mat-card-content class="onboarding__complete-inner">
+        <mat-icon class="onboarding__complete-icon" aria-hidden="true">check_circle</mat-icon>
+        <div>
+          <h2 class="onboarding__complete-title">You’re ready to start using the system</h2>
+          <p class="onboarding__complete-copy">
+            When you leave this page, use the sidebar for day-to-day work. You can return here anytime from
+            <strong>Training hub</strong> in the menu.
+          </p>
+          <a mat-flat-button color="primary" routerLink="/app/dashboard">Go to Dashboard</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

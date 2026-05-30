@@ -1,0 +1,70 @@
+/**
+ * Full Material 3 system color overrides for dark mode — navy slate stack,
+ * aligned with app tokens (--bg-main / --bg-surface / soft contrast).
+ */
+html:is(.app-dark-theme, .dark-theme) {
+  color-scheme: dark;
+
+  --mat-sys-background: #0b1220;
+  --mat-sys-on-background: #f1f5f9;
+
+  --mat-sys-surface: #111827;
+  --mat-sys-surface-dim: #0f1624;
+  --mat-sys-surface-bright: #273549;
+  --mat-sys-surface-container-lowest: #0b1220;
+  --mat-sys-surface-container-low: #111827;
+  --mat-sys-surface-container: #161e2e;
+  --mat-sys-surface-container-high: #1f2937;
+  --mat-sys-surface-container-highest: #273549;
+  --mat-sys-surface-variant: #334155;
+  --mat-sys-surface-tint: #818cf8;
+
+  --mat-sys-on-surface: #f1f5f9;
+  --mat-sys-on-surface-variant: #94a3b8;
+
+  --mat-sys-outline: rgba(148, 163, 184, 0.45);
+  --mat-sys-outline-variant: rgba(255, 255, 255, 0.1);
+
+  --mat-sys-primary: #a5b4fc;
+  --mat-sys-on-primary: #1e1b4b;
+  --mat-sys-primary-container: #3730a3;
+  --mat-sys-on-primary-container: #e0e7ff;
+  --mat-sys-primary-fixed: #e0e7ff;
+  --mat-sys-primary-fixed-dim: #a5b4fc;
+  --mat-sys-on-primary-fixed: #1e1b4b;
+  --mat-sys-on-primary-fixed-variant: #4338ca;
+
+  --mat-sys-secondary: #cbd5e1;
+  --mat-sys-on-secondary: #1e293b;
+  --mat-sys-secondary-container: #334155;
+  --mat-sys-on-secondary-container: #f1f5f9;
+  --mat-sys-secondary-fixed: #f1f5f9;
+  --mat-sys-secondary-fixed-dim: #cbd5e1;
+  --mat-sys-on-secondary-fixed: #1e293b;
+  --mat-sys-on-secondary-fixed-variant: #475569;
+
+  --mat-sys-tertiary: #c4b5fd;
+  --mat-sys-on-tertiary: #1e1b4b;
+  --mat-sys-tertiary-container: #5b21b6;
+  --mat-sys-on-tertiary-container: #ede9fe;
+  --mat-sys-tertiary-fixed: #ede9fe;
+  --mat-sys-tertiary-fixed-dim: #c4b5fd;
+  --mat-sys-on-tertiary-fixed: #1e1b4b;
+  --mat-sys-on-tertiary-fixed-variant: #6d28d9;
+
+  --mat-sys-error: #fca5a5;
+  --mat-sys-on-error: #450a0a;
+  --mat-sys-error-container: #7f1d1d;
+  --mat-sys-on-error-container: #fee2e2;
+
+  --mat-sys-inverse-surface: #f1f5f9;
+  --mat-sys-inverse-on-surface: #111827;
+  --mat-sys-inverse-primary: #4338ca;
+
+  --mat-sys-scrim: rgba(7, 11, 20, 0.62);
+  --mat-sys-shadow: rgba(11, 18, 32, 0.55);
+
+  --mat-sys-neutral10: #161e2e;
+  --mat-sys-neutral-variant20: #273549;
+}
+

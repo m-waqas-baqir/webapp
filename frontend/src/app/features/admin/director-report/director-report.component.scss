@@ -1,0 +1,84 @@
+.report-insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.insight-card {
+  border-radius: 12px !important;
+}
+
+.insight-card--wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 720px) {
+  .insight-card--wide {
+    grid-column: span 1;
+  }
+}
+
+.insight-card__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.55));
+  margin-bottom: 6px;
+}
+
+.insight-card__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.insight-card__value--sm {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.insight-card__hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.55));
+  line-height: 1.4;
+}
+
+.report-takeaways {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--mat-sys-primary-container, #e3f2fd) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant, #cac4d0) 40%, transparent);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.report-takeaways p {
+  margin: 0 0 8px;
+}
+
+.report-takeaways p:last-child {
+  margin-bottom: 0;
+}
+
+.report-takeaways__mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.85em;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.report-row--highlight {
+  background: color-mix(in srgb, var(--mat-sys-tertiary-container, #e8def8) 65%, transparent);
+}

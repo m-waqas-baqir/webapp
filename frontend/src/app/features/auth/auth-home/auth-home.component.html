@@ -1,0 +1,47 @@
+<app-page-header icon="person" title="Account" subtitle="Session, role, and what you can see in the portal." />
+
+<div class="auth-grid">
+<mat-card appearance="outlined" class="auth-card">
+  <mat-card-header>
+    <mat-card-title>Profile</mat-card-title>
+    <mat-card-subtitle>Signed-in user</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    @if (auth.user(); as u) {
+      <p><strong>Name:</strong> {{ u.name }}</p>
+      <p><strong>Email:</strong> {{ u.email }}</p>
+      <p><strong>Role:</strong> {{ u.role }}</p>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card *appHasRole="[UserRole.DIRECTOR, UserRole.ADMIN]" appearance="outlined" class="auth-card">
+  <mat-card-header>
+    <mat-card-title>Staff tools</mat-card-title>
+    <mat-card-subtitle>Visible to DIRECTOR and ADMIN only</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Use plots, rentals, owners, activity logs, and reports from the sidebar for day-to-day workflows.</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *appHasRole="UserRole.DIRECTOR" appearance="outlined" class="auth-card auth-card--accent">
+  <mat-card-header>
+    <mat-card-title>Director</mat-card-title>
+    <mat-card-subtitle>Full visibility endpoints (API)</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Director-only reports (e.g. listing owner export) and full owner registry fields are available under Reports in the sidebar.</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *appHasRole="UserRole.AGENT" appearance="outlined" class="auth-card">
+  <mat-card-header>
+    <mat-card-title>Field agent</mat-card-title>
+    <mat-card-subtitle>Assigned data only</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>You see only plots and rentals assigned to your account; sensitive owner fields are omitted by the API.</p>
+  </mat-card-content>
+</mat-card>
+</div>

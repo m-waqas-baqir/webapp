@@ -1,0 +1,286 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+$dha-map-height: clamp(280px, 48vw, 440px);
+
+.map-container.dha-map {
+  border-radius: var(--radius-xl, 20px);
+  overflow: hidden;
+  box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow, var(--shadow-medium)));
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant, #ccc) 45%, transparent);
+  background: var(--mat-sys-surface-container-lowest, #fafafa);
+}
+
+.map-container.dha-map.glass {
+  border-color: var(--glass-border, rgba(255, 255, 255, 0.3));
+  background: var(--glass-bg, rgba(255, 255, 255, 0.6));
+  backdrop-filter: var(--blur, blur(14px));
+  -webkit-backdrop-filter: var(--blur, blur(14px));
+  box-shadow: var(--shadow-glass, var(--shadow-premium-elevated));
+}
+
+/* Dark: deeper frame so map chrome / toolbar contrast stays readable */
+:host-context(html:is(.app-dark-theme, .dark-theme)) .map-container.dha-map.glass {
+  background: color-mix(in srgb, var(--bg-surface, #111827) 88%, transparent);
+  border-color: var(--glass-border);
+}
+
+.dha-map {
+  position: relative;
+  width: 100%;
+  min-height: $dha-map-height;
+}
+
+.dha-map__gradient-scrim {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 72px;
+  z-index: 450;
+  pointer-events: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--mat-sys-surface, #fff) 55%, transparent), transparent);
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map__gradient-scrim {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mat-sys-surface-container-low, #1a1a1f) 70%, transparent),
+    transparent
+  );
+}
+
+.dha-map__stage {
+  position: relative;
+  min-height: $dha-map-height;
+}
+
+.dha-map__stage-inner {
+  position: relative;
+  width: 100%;
+  min-height: $dha-map-height;
+}
+
+/* Top-right stack — Leaflet zoom lives top-left so controls no longer overlap */
+.dha-map__toolbar {
+  position: absolute;
+  z-index: 1100;
+  top: 12px;
+  right: 12px;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: min(100% - 24px, 200px);
+  padding: 10px;
+  pointer-events: auto;
+  border-radius: var(--radius-xl, 20px);
+  background: var(--bg-glass, rgba(255, 255, 255, 0.75));
+  backdrop-filter: var(--premium-blur, blur(12px));
+  -webkit-backdrop-filter: var(--premium-blur, blur(12px));
+  border: 1px solid color-mix(in srgb, #fff 40%, transparent);
+  box-shadow: var(--shadow-premium-soft, var(--shadow-soft));
+  transition: transform var(--motion-ui, 260ms) var(--ease-smooth, ease-out),
+    box-shadow var(--motion-ui, 260ms) var(--ease-smooth, ease-out);
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map__toolbar {
+  /* Opaque slate panel — avoids “light glass + pale label” on bright map tiles */
+  background: color-mix(in srgb, var(--bg-elevated, #1f2937) 94%, rgba(7, 11, 20, 0.88));
+  border-color: var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Stroked controls: explicit label contrast on dark panel */
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map__toolbar .mat-mdc-outlined-button:not(:disabled) {
+  color: var(--text-primary, #f1f5f9) !important;
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map__toolbar .mat-mdc-outlined-button.mat-primary:not(:disabled) {
+  color: var(--primary, #a5b4fc) !important;
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map__toolbar .mat-mdc-outlined-button .mdc-button__label {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dha-map__toolbar:hover {
+    transform: scale(1.01);
+    box-shadow: var(--shadow-premium-elevated, var(--shadow-medium));
+  }
+}
+
+.dha-map__toolbar .mat-mdc-button-base {
+  border-radius: 999px !important;
+  min-height: 36px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition:
+    transform 0.22s var(--ease-smooth, ease-out),
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dha-map__toolbar .mat-mdc-button-base:hover:not(:disabled) {
+    transform: scale(1.04);
+  }
+}
+
+.dha-map__stage-inner:fullscreen,
+.dha-map__stage-inner:-webkit-full-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: var(--mat-sys-surface, #1a1a1a);
+  border-radius: 0;
+}
+
+.dha-map__stage-inner:fullscreen .dha-map__host,
+.dha-map__stage-inner:-webkit-full-screen .dha-map__host {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+
+.dha-map__placeholder {
+  position: relative;
+  width: 100%;
+  height: $dha-map-height;
+  min-height: $dha-map-height;
+  overflow: hidden;
+  background: var(--mat-sys-surface-container-lowest, #fafafa);
+}
+
+.dha-map__placeholder--overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dha-map__placeholder-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dha-map__host {
+  position: relative;
+  width: 100%;
+  height: $dha-map-height;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity var(--motion-map, 640ms) var(--ease-smooth, ease-out);
+}
+
+.dha-map__host--visible {
+  opacity: 1;
+}
+
+:host ::ng-deep .leaflet-container {
+  font-family: inherit;
+}
+
+:host ::ng-deep .leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow-premium-soft, var(--shadow-soft)) !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+}
+
+:host ::ng-deep .leaflet-control-zoom a {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  border-radius: 0 !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+:host ::ng-deep .leaflet-control-zoom a:hover {
+  transform: scale(1.05);
+}
+
+/* Office div marker — pin + always-visible label (no default marker image) */
+:host ::ng-deep .custom-office-marker {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  /* Allow marker + popup clicks (none would pass events to the boundary polygon below). */
+  pointer-events: auto;
+  background: transparent !important;
+  border: none !important;
+}
+
+:host ::ng-deep .custom-office-marker .pin {
+  width: 14px;
+  height: 14px;
+  background: #8b5cf6;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.3);
+  flex-shrink: 0;
+}
+
+:host ::ng-deep .custom-office-marker .label {
+  margin-top: 4px;
+  background: rgba(15, 23, 42, 0.78);
+  color: rgba(248, 250, 252, 0.98);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+@keyframes dha-map-marker-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.06);
+    opacity: 0.92;
+  }
+}
+
+/* Pulse only non–office markers (div office marker must not scale/warp the label) */
+:host ::ng-deep .leaflet-marker-icon:not(.custom-office-marker) {
+  animation: dha-map-marker-pulse 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .leaflet-marker-icon:not(.custom-office-marker) {
+    animation: none;
+  }
+
+  .dha-map__toolbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .dha-map__toolbar:hover {
+    transform: none;
+  }
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme)) .dha-map {
+  box-shadow: var(--elev-3-shadow, var(--shadow-strong));
+}
+
+:host-context(html:is(.app-dark-theme, .dark-theme))
+  .dha-map__host.dha-map__host--visible {
+  filter: brightness(0.82) contrast(1.05) saturate(0.95);
+}

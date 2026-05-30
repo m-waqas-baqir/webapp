@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.khayaban-form__warn {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-body-size);
+  color: var(--mat-sys-error);
+}

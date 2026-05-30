@@ -1,0 +1,48 @@
+.bulk-import-result {
+  margin-bottom: 1rem;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-left: auto;
+    font-size: 0.875rem;
+  }
+
+  &__ok {
+    color: var(--mat-sys-color-primary, #1a73e8);
+  }
+
+  &__fail {
+    color: var(--mat-sys-color-error, #c62828);
+  }
+
+  &__table-wrap {
+    overflow: auto;
+    max-height: 280px;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  &__all-ok {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+}

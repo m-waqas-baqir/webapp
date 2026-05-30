@@ -1,0 +1,19 @@
+.owner-form__hint {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-label-size);
+  line-height: 1.45;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.owner-form__hint code {
+  font-size: 0.8em;
+}
+
+.owner-form__loading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  font-size: var(--text-body-size);
+  color: var(--mat-sys-on-surface-variant);
+}

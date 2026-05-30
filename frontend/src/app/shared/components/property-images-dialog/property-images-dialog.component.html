@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>{{ titleCase() }} images — {{ data.title }}</h2>
+
+<mat-dialog-content class="dialog-body">
+  @if (uploadBanner(); as banner) {
+    <mat-card class="upload-banner" appearance="outlined" role="status">
+      <mat-card-content>{{ banner }}</mat-card-content>
+    </mat-card>
+  }
+
+  @if (loading) {
+    <div class="center">
+      <mat-progress-spinner diameter="36" mode="indeterminate" />
+    </div>
+  } @else if (images.length === 0) {
+    <p class="hint">No images yet. Upload JPEG, PNG, GIF, or WebP (max size enforced by server).</p>
+  }
+
+  <div class="img-list">
+    @for (img of images; track img.id) {
+      <div class="img-row">
+        <div class="img-meta">
+          <mat-icon class="img-meta__icon">image</mat-icon>
+          <div>
+            <div class="img-meta__name">{{ img.fileName }}</div>
+            <div class="img-meta__sub">{{ (img.byteSize / 1024) | number: '1.0-1' }} KB · {{ img.contentType }}</div>
+          </div>
+        </div>
+        <div class="img-row__actions">
+          <button mat-button type="button" (click)="preview(img)">Preview</button>
+          <button mat-button type="button" color="warn" (click)="remove(img)">Remove</button>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (previewUrl) {
+    <div class="preview-wrap">
+      <img [src]="previewUrl" alt="Preview" class="preview-img" />
+    </div>
+  }
+
+  <div class="upload-row">
+    <input #fileInput type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden (change)="onFileSelected($event)" />
+    <button mat-flat-button color="primary" type="button" [disabled]="uploading" (click)="fileInput.click()">
+      @if (uploading) {
+        <mat-progress-spinner diameter="20" mode="indeterminate" />
+      } @else {
+        <mat-icon>upload</mat-icon>
+      }
+      Upload image
+    </button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Close</button>
+</mat-dialog-actions>

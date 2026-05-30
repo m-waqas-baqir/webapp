@@ -1,0 +1,288 @@
+<app-page-header
+  icon="map"
+  title="Plots"
+  subtitle="Inventory, filters, and assignments — scoped by your role."
+/>
+
+<mat-menu #plotActionsMenu="matMenu">
+  <ng-template matMenuContent let-plot="plot">
+    <button mat-menu-item type="button" (click)="openImages(plot)">
+      <mat-icon>photo_library</mat-icon>
+      <span>Images</span>
+    </button>
+    @if (canEditPlot(plot)) {
+      <button mat-menu-item type="button" (click)="edit(plot)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+    }
+    @if (canManage()) {
+      <button mat-menu-item type="button" (click)="remove(plot)">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    }
+  </ng-template>
+</mat-menu>
+
+<section class="data-view">
+  <div class="data-view__toolbar">
+    @if (auth.hasAnyRole(UserRole.DIRECTOR, UserRole.ADMIN, UserRole.AGENT)) {
+      <button mat-flat-button color="primary" type="button" (click)="openCreate()">
+        <mat-icon>add</mat-icon>
+        Add plot
+      </button>
+    }
+    @if (canExportExcel()) {
+      <button
+        mat-stroked-button
+        type="button"
+        matTooltip="Download template to avoid upload errors"
+        matTooltipPosition="below"
+        (click)="downloadPlotsImportTemplate()"
+        [disabled]="excelTemplateDownloading || excelExporting || excelUploading || loading"
+      >
+        <span class="excel-action-btn__inner">
+          @if (excelTemplateDownloading) {
+            <mat-spinner diameter="20" />
+          } @else {
+            <mat-icon>description</mat-icon>
+          }
+          Download template
+        </span>
+      </button>
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="exportPlotsExcel()"
+        [disabled]="excelExporting || excelUploading || excelTemplateDownloading || loading"
+      >
+        <span class="excel-action-btn__inner">
+          @if (excelExporting) {
+            <mat-spinner diameter="20" />
+          } @else {
+            <mat-icon>download</mat-icon>
+          }
+          Export Excel
+        </span>
+      </button>
+    }
+    @if (canBulkImportExcel()) {
+      <input
+        #plotsExcelFileInput
+        type="file"
+        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        hidden
+        (change)="onPlotsExcelSelected($event)"
+      />
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="plotsExcelFileInput.click()"
+        [disabled]="excelExporting || excelUploading || excelTemplateDownloading || loading"
+      >
+        <span class="excel-action-btn__inner">
+          @if (excelUploading) {
+            <mat-spinner diameter="20" />
+          } @else {
+            <mat-icon>upload_file</mat-icon>
+          }
+          Upload Excel
+        </span>
+      </button>
+    }
+  </div>
+
+  @if (importResult) {
+    <app-bulk-import-result-panel
+      [result]="importResult"
+      heading="Plots import"
+      (dismiss)="clearPlotsImportResult()"
+    />
+  }
+
+  <mat-card appearance="outlined" class="data-view__card">
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate" class="data-view__card-progress" aria-hidden="true" />
+    }
+    <mat-card-content>
+      <div class="data-view__filters">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Phase</mat-label>
+          <mat-select
+            [(ngModel)]="selectedPhaseId"
+            (ngModelChange)="onPhaseFilterChange()"
+            placeholder="All phases"
+          >
+            <mat-option [value]="null">All phases</mat-option>
+            @for (ph of phasesForFilter; track ph.id) {
+              <mat-option [value]="ph.id">{{ ph.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Khayaban</mat-label>
+          <mat-select
+            [(ngModel)]="selectedKhayabanId"
+            (ngModelChange)="onKhayabanOrStatusChange()"
+            [disabled]="selectedPhaseId == null"
+            placeholder="All"
+          >
+            <mat-option [value]="null">All in phase</mat-option>
+            @for (k of khayabansForFilter; track k.id) {
+              <mat-option [value]="k.id">{{ k.name }}</mat-option>
+            }
+          </mat-select>
+          @if (selectedPhaseId == null) {
+            <mat-hint>Select a phase to filter by street</mat-hint>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Status</mat-label>
+          <mat-select
+            [(ngModel)]="selectedStatus"
+            (ngModelChange)="onKhayabanOrStatusChange()"
+            placeholder="All statuses"
+          >
+            <mat-option [value]="null">All statuses</mat-option>
+            @for (s of statusOptions; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Min price</mat-label>
+          <input matInput type="number" [(ngModel)]="minPrice" (ngModelChange)="onNumericFiltersChange()" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Max price</mat-label>
+          <input matInput type="number" [(ngModel)]="maxPrice" (ngModelChange)="onNumericFiltersChange()" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Min size</mat-label>
+          <input matInput type="number" [(ngModel)]="minSize" (ngModelChange)="onNumericFiltersChange()" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Max size</mat-label>
+          <input matInput type="number" [(ngModel)]="maxSize" (ngModelChange)="onNumericFiltersChange()" />
+        </mat-form-field>
+      </div>
+
+      @if (loading) {
+        <div class="data-view__skeleton" aria-hidden="true">
+          @for (s of [1, 2, 3, 4, 5]; track s) {
+            <div class="data-view__skeleton-row"></div>
+          }
+        </div>
+      }
+
+      <div
+        class="data-view__table-scroller"
+        [class.data-view__table-scroller--dim]="loading"
+        [attr.aria-busy]="loading"
+      >
+        <table
+          mat-table
+          matSort
+          [matSortActive]="sortActive"
+          [matSortDirection]="sortDirection"
+          (matSortChange)="onSort($event)"
+          [dataSource]="plots"
+          class="mat-elevation-z0 data-view__table plot-table"
+        >
+          <ng-container matColumnDef="plotNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="plotNumber">Plot</th>
+            <td mat-cell *matCellDef="let row">{{ row.plotNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="phase">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="phase">Phase</th>
+            <td mat-cell *matCellDef="let row">{{ phaseLabel(row.phaseId) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="khayaban">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="khayaban">Khayaban</th>
+            <td mat-cell *matCellDef="let row">{{ khayabanLabel(row.khayabanId) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="size">Size</th>
+            <td mat-cell *matCellDef="let row">{{ row.size | number: '1.0-4' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="price">Price</th>
+            <td mat-cell *matCellDef="let row">{{ row.price | number: '1.2-2' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="data-view__status-pill">{{ row.status }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="registryOwner">
+            <th mat-header-cell *matHeaderCellDef>Owner</th>
+            <td mat-cell *matCellDef="let row">{{ row.ownerName || (row.ownerId != null ? '#' + row.ownerId : '—') }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="assignedAgent">
+            <th mat-header-cell *matHeaderCellDef>Agent</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.assignedAgentName || (row.assignedAgentId != null ? '#' + row.assignedAgentId : '—') }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button
+                mat-icon-button
+                type="button"
+                [matMenuTriggerFor]="plotActionsMenu"
+                [matMenuTriggerData]="{ plot: row }"
+                aria-label="Row actions"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+        </table>
+
+        @if (!loading && plots.length === 0) {
+          <app-empty-state
+            icon="search_off"
+            titleText="No plots found"
+            hint="Try clearing phase, khayaban, or status — or add a new plot if you have access."
+          >
+            @if (auth.hasAnyRole(UserRole.DIRECTOR, UserRole.ADMIN, UserRole.AGENT)) {
+              <button mat-flat-button color="primary" type="button" (click)="openCreate()">
+                <mat-icon>add</mat-icon>
+                Add plot
+              </button>
+            }
+          </app-empty-state>
+        }
+
+        <mat-paginator
+          [length]="totalElements"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true"
+          (page)="onPage($event)"
+        />
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

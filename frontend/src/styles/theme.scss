@@ -1,0 +1,431 @@
+/**
+ * Apple-style glass SaaS theme — visual tokens + utilities.
+ * Loaded last so these rules refine Material and legacy tokens.
+ */
+
+:root {
+  --primary: #6366f1;
+  --accent: #8b5cf6;
+
+  /* Light — layered surfaces (tinted, never harsh white/black) */
+  --bg-main: #f5f7fb;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f1f5f9;
+
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.3);
+
+  --blur: blur(16px);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --border-color: rgba(15, 23, 42, 0.08);
+
+  --shadow-glass: 0 8px 32px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.07);
+
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Harmonise with existing scale */
+  --radius-md: 12px;
+}
+
+/* Premium dark — deep navy layers, soft contrast (no pure black / no glare white) */
+html:is(.app-dark-theme, .dark-theme) {
+  --primary: #818cf8;
+  --accent: #a78bfa;
+
+  --bg-main: #0b1220;
+  --bg-surface: #111827;
+  --bg-elevated: #1f2937;
+
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+
+  --shadow-glass: 0 10px 36px rgba(3, 7, 18, 0.55);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Glass + cards */
+/* -------------------------------------------------------------------------- */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition:
+    box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s ease;
+}
+
+html:not(.app-dark-theme):not(.dark-theme) .card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Unified sticky header (marketing, auth, workspace toolbar, in-page title) */
+/* -------------------------------------------------------------------------- */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+html:is(.app-dark-theme, .dark-theme) .app-header {
+  background: rgba(17, 24, 39, 0.7);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--glass-border) 65%, transparent);
+}
+
+.mat-toolbar.mat-primary.shell__toolbar.app-header,
+.mat-toolbar.shell__toolbar.app-header {
+  --mat-toolbar-container-background: transparent;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-glass);
+  transition:
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+html:is(.app-dark-theme, .dark-theme) .mat-toolbar.shell__toolbar.app-header {
+  background: rgba(17, 24, 39, 0.72) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-soft);
+}
+
+.mat-toolbar.shell__toolbar.app-header .mat-mdc-button-touch-target,
+.mat-toolbar.shell__toolbar.app-header .mat-mdc-icon-button,
+.mat-toolbar.shell__toolbar.app-header .mdc-icon-button {
+  color: var(--text-primary);
+}
+
+.page-header.app-header {
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  padding: var(--space-md, 16px) var(--space-md, 16px) var(--space-md, 16px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow-glass);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Primary CTA (gradient) — add class `btn-primary` beside Material buttons */
+/* -------------------------------------------------------------------------- */
+
+a.btn-primary.mat-mdc-unelevated-button,
+button.btn-primary.mat-mdc-unelevated-button,
+a.mat-mdc-unelevated-button.btn-primary,
+button.mat-mdc-unelevated-button.btn-primary {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  color: rgba(255, 255, 255, 0.98) !important;
+  border-radius: var(--radius-md) !important;
+  padding-inline: 18px !important;
+  min-height: 40px !important;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.28s ease;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+}
+
+html:is(.app-dark-theme, .dark-theme) a.btn-primary.mat-mdc-unelevated-button,
+html:is(.app-dark-theme, .dark-theme) button.btn-primary.mat-mdc-unelevated-button,
+html:is(.app-dark-theme, .dark-theme) a.mat-mdc-unelevated-button.btn-primary,
+html:is(.app-dark-theme, .dark-theme) button.mat-mdc-unelevated-button.btn-primary {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a.btn-primary.mat-mdc-unelevated-button:hover,
+  button.btn-primary.mat-mdc-unelevated-button:hover,
+  a.mat-mdc-unelevated-button.btn-primary:hover,
+  button.mat-mdc-unelevated-button.btn-primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.55);
+    filter: brightness(1.04);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hero motion */
+/* -------------------------------------------------------------------------- */
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: theme-fade-up 0.65s var(--ease-smooth, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+}
+
+.fade-up--delay-1 {
+  animation-delay: 0.12s;
+}
+
+.fade-up--delay-2 {
+  animation-delay: 0.22s;
+}
+
+.fade-up--delay-3 {
+  animation-delay: 0.32s;
+}
+
+@keyframes theme-fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Ambient blobs (very low opacity) */
+/* -------------------------------------------------------------------------- */
+
+.landing__hero-blobs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.landing__hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.14;
+  animation: theme-blob-drift 22s ease-in-out infinite alternate;
+}
+
+.landing__hero-blob--a {
+  width: min(520px, 70vw);
+  height: min(420px, 55vh);
+  background: radial-gradient(circle at 30% 30%, var(--primary), transparent 70%);
+  top: -12%;
+  left: -8%;
+}
+
+.landing__hero-blob--b {
+  width: min(480px, 65vw);
+  height: min(380px, 50vh);
+  background: radial-gradient(circle at 70% 40%, var(--accent), transparent 72%);
+  bottom: -18%;
+  right: -10%;
+  animation-delay: -6s;
+}
+
+@keyframes theme-blob-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(2%, -2%, 0) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing__hero-blob {
+    animation: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Homepage services — infinite horizontal slider (CSS only, duplicated track) */
+/* -------------------------------------------------------------------------- */
+
+.slider {
+  overflow: hidden;
+  width: 100%;
+  max-width: min(1200px, 100%);
+  margin-inline: auto;
+}
+
+.slider-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: scrollSlider 20s linear infinite;
+}
+
+.slider:hover .slider-track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollSlider {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.slide-card {
+  min-width: 280px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-track {
+    animation: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 900px;
+    margin-inline: auto;
+    transform: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Brand wordmark (marketing + login topbar) */
+/* -------------------------------------------------------------------------- */
+
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-align: left;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+html:is(.app-dark-theme, .dark-theme) .brand {
+  background: none;
+  -webkit-text-fill-color: var(--text-primary, #f1f5f9);
+  color: var(--text-primary, #f1f5f9);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Global polish — text hierarchy + surfaces */
+/* -------------------------------------------------------------------------- */
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mat-mdc-card-title {
+  color: var(--text-primary);
+}
+
+html:is(.app-dark-theme, .dark-theme) body {
+  color: var(--text-secondary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mat-mdc-card,
+  .dash-card,
+  .data-view__card {
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mat-mdc-card:hover,
+  .dash-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  html:is(.app-dark-theme, .dark-theme) .mat-mdc-card:hover,
+  html:is(.app-dark-theme, .dark-theme) .dash-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  html:not(.app-dark-theme):not(.dark-theme) .mat-mdc-card:hover,
+  html:not(.app-dark-theme):not(.dark-theme) .dash-card:hover {
+    box-shadow: var(--shadow-glass), 0 16px 40px rgba(99, 102, 241, 0.07);
+  }
+}
+
+/* Dark mode: stroked actions on glass panels (marketing CTA, frosted sections) */
+html:is(.app-dark-theme, .dark-theme) .glass .mat-mdc-outlined-button:not(:disabled),
+html:is(.app-dark-theme, .dark-theme) .app-glass .mat-mdc-outlined-button:not(:disabled),
+html:is(.app-dark-theme, .dark-theme) .u-glass-hero-panel .mat-mdc-outlined-button:not(:disabled) {
+  color: var(--text-primary, #f1f5f9) !important;
+}
+
+html:is(.app-dark-theme, .dark-theme) .glass .mat-mdc-outlined-button.mat-primary:not(:disabled),
+html:is(.app-dark-theme, .dark-theme) .app-glass .mat-mdc-outlined-button.mat-primary:not(:disabled) {
+  color: var(--primary, #a5b4fc) !important;
+}
+
+/* Map chrome — visual only (no Leaflet / logic changes) */
+.map-container.dha-map {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-premium-elevated, var(--elev-2-shadow));
+}
+
+html:is(.app-dark-theme, .dark-theme) .map-container.dha-map {
+  box-shadow: var(--shadow-soft);
+  border-color: var(--glass-border);
+}
+
+.dha-map__toolbar .mat-mdc-button-base {
+  border-radius: 999px !important;
+  box-shadow: var(--shadow-glass);
+}

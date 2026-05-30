@@ -1,0 +1,28 @@
+<app-page-header
+  icon="home_work"
+  title="My Properties"
+  subtitle="Your hub for plots and rentals — same inventory as the main lists, filtered to what you can act on."
+/>
+
+<div class="mp-grid">
+  <mat-card class="mp-card" appearance="outlined">
+    <mat-card-content>
+      <div class="mp-card__icon">
+        <mat-icon>map</mat-icon>
+      </div>
+      <h2 class="mp-card__title">Plots</h2>
+      <p class="mp-card__text">Browse and manage plot inventory available to you.</p>
+      <a mat-flat-button color="primary" routerLink="/app/plots">Open plots</a>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="mp-card" appearance="outlined">
+    <mat-card-content>
+      <div class="mp-card__icon mp-card__icon--rentals">
+        <mat-icon>home_work</mat-icon>
+      </div>
+      <h2 class="mp-card__title">Rentals</h2>
+      <p class="mp-card__text">Track rental listings and updates in one place.</p>
+      <a mat-flat-button color="primary" routerLink="/app/rentals">Open rentals</a>
+    </mat-card-content>
+  </mat-card>
+</div>
